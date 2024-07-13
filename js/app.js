@@ -203,7 +203,6 @@ function setSettingsButtonActivity(value){
 function onGearClicked(){
     if(settingsTabOpen){
         const workDurationValue = Number.parseInt(workDurationField.value);
-        const breakDurationValue = Number.parseInt(breakDurationField.value);
 
         if(workDurationValue < 0 || workDurationValue > 99){
             workDurationField.classList.add("invalid");
@@ -213,16 +212,7 @@ function onGearClicked(){
             return;
         }
 
-        if(breakDurationValue < 0 || breakDurationValue > 99){
-            breakDurationField.classList.add("invalid");
-            setTimeout(()=>{
-                breakDurationField.classList.remove("invalid");
-            }, 1000);
-            return;
-        }
-
         eggWaitingTime = workDurationValue;
-        breakTime = breakDurationValue;
 
         minutes = eggWaitingTime;
         updateTimerDisplay();
