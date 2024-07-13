@@ -8,10 +8,14 @@ const SANDWICH_TIME = 3;
 
 let settingsTabOpen = false;
 
+// The time every sandwich lasts in Pokémon SV
+const sandwichTime = 30;
+
 // The interval between every basket check for eggs
 let eggWaitingTime = 5;
 
-let startingTime;
+let lastPickingUpTime;
+let lastSandwichTime;
 
 let intervalID;
 
@@ -25,11 +29,16 @@ resetButton.classList.add("hidden");
 
 // Execute this when clicking the "start" button
 startButton.addEventListener("click", () => {
-    currentState = WAITING_TIME;
-    updateStatusDisplay();
-    updateStartResetButtons();
-    setSettingsButtonActivity(false);
-    startTimer();
+    switch(currentState) {
+        case IDLE_STATE:
+        case SANDWICH_TIME:
+            makeSandwich();
+            break;
+        
+        case PICKUP_TIME:
+            pickUpEggs();
+            break;
+    }
 });
 
 resetButton.addEventListener("click", resetTimer);
@@ -92,7 +101,7 @@ function updateTimerDisplay(){
     }
  
     // Elased time in milliseconds
-    const elapsed = new Date() - startingTime;
+    const elapsed = new Date() - lastPickingUpTime;
 
     const currentTimerTime = eggWaitingTime;
 
@@ -162,7 +171,12 @@ function resetTimer(){
 }
 
 function startTimer(){
-    startingTime = new Date()
+    currentState = WAITING_TIME;
+    updateStatusDisplay();
+    updateStartResetButtons();
+    setSettingsButtonActivity(false);
+
+    lastPickingUpTime = new Date()
 
     updateTimerDisplay();
 
@@ -221,4 +235,37 @@ function onGearClicked(){
 
     durationInputArea.classList.toggle("hidden");
     timerContainer.classList.toggle("hidden");
+}
+
+// State dependant functions
+
+/**
+ * idle, sandwichTime => set last sanwdiwh and start timer => waiting state
+ * waiting, pick up => do nothing
+ */
+function makeSandwich() {
+    if(currentState === WAITING_TIME || currentState === PICKUP_TIME){
+        console.error("Trying to make a sandwich with invalid state.");
+        return;
+    }
+
+    lastSandwichTime = new Date();
+    startTimer()
+}
+
+function pickUpEggs() {
+    if(currentState !== PICKUP_TIME) {
+        console.error("Trying to pick up eggs with invalid state.");
+        return;
+    }
+
+    const sandwichRemainingTime = sandwichTime * 60 - ((new Date() - lastSandwichTime) / 1000); 
+
+    if(sandwichRemainingTime < eggWaitingTime * 60) {
+        currentState = SANDWICH_TIME;
+        updateStatusDisplay();
+        return;
+    }
+
+    startTimer()
 }
