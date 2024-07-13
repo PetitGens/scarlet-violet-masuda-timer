@@ -1,0 +1,167 @@
+body{
+    background-color: tomato;
+    font-family: "Mooli", sans-serif;
+}
+
+h1{
+    text-align: center;
+    font-size: 5vh;
+    
+    font-family: "Sofia", sans-serif;
+}
+
+/* Status Bar (indicates if the user should work or do a break) */
+
+#statusBar{
+    margin-left: auto;
+    margin-right: auto;
+    
+    width: fit-content;
+    border: solid;
+    
+    padding: 1vh;
+
+    text-align: center;
+    font-size: 3.5vh;
+}
+
+span.status{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+span.active{
+    color: blue;
+    font-weight: bold;
+}
+
+/* Time display */
+
+#timerContainer{
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+
+    /*Circular border*/
+    border-radius: 100%;
+    border: 10px solid;
+
+    width: 36vh;
+    height: 36vh;
+}
+
+#timer{
+    display: flex;
+    position: absolute;
+    width: 36vh;
+    height: 36vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12.6vh;
+}
+
+/* Start and Reset Buttons */
+
+#buttonsSection{
+    display: flex;
+}
+
+.startResetButtons{
+    display: flex;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 2vh;
+
+    border: solid black 5px;
+    border-radius: 50%;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#startButton{
+    width: 16.2vh;
+    height: 18vh;
+    padding-left: 1.8vh;
+}
+
+#resetButton{
+    width: 18vh;
+    height: 18vh;
+}
+
+.startResetButtons:hover{
+    border-color: #0E2C5C;
+}
+
+.startResetButtons > img{
+    width: 65%;
+    height: 65%;
+}
+
+/* Settings button */
+
+.settingsButton{
+    display: inline;
+    margin-top: 2vh;
+    margin-right: auto;
+    width: fit-content;
+
+    /* Fontawesome icon's style */
+    font-size: 18vh;
+}
+
+#activeSettingsButton{
+    color: black;
+}
+
+#activeSettingsButton:hover{
+    color: #0E2C5C;
+}
+
+#inactiveSettingsButton{
+    color: #ababab;
+}
+
+/* Duration input */
+
+#durationInput{
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-top: 10.5vh;
+
+    height: 25.5vh;
+    width: fit-content;
+
+    border: black solid 10px;
+    border-radius: 20%;
+}
+
+#durationInput > div{
+    margin-left: 1vw;
+    margin-right: 1vw;
+    
+    height: 12.5vh;
+
+    font-size: 3.5vh;
+}
+
+#durationInput > div > label > input{
+    font-size: 3vh;
+}
+
+/* hidden class */
+
+.hidden{
+    display: none;
+}
+
+input.invalid{
+    color: red;
+    font-weight: bold;
+}

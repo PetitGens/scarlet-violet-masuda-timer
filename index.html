@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mooli">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+
+    <!-- Fontawesome icons -->
+    <script src="https://kit.fontawesome.com/6faa555a95.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+    <h1>POMODORO TIMER</h1>
+</header>
+
+<main>
+    <div id="statusBar">
+        <span id="workingStatus" class="status">Work</span>
+        |
+        <span id="breakStatus" class="status">Break</span>
+    </div>
+
+    <div> <!-- Timer / duration input -->
+        <div id="timerContainer"><div id="timer" class="timerClass"></div></div>
+
+        <div id="durationInput" class="hidden">
+            <div>
+                <label for="workDuration">Work Time (minutes) :</label>
+                <input id="workDuration" type="number" min="0" max="99" required value="25">                
+            </div>
+            <div>
+                <label for="breakDuration">Break Time (minutes) :</label>
+                <input id="breakDuration" type="number" min="0" max="99" required value="5">
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="buttonsSection">
+        <div id="startButton" class="startResetButtons">
+            <img src="img/play-button-blue.png" alt="blue play button" id="playButtonBlue" class="hidden">
+            <img src="img/play-button-black.png" alt="black play button" id="playButtonBlack" >
+        </div>
+
+        <div id="resetButton" class="startResetButtons">
+            <img src="img/restart-button-black.png" alt="black restart button" id="restartButtonBlack">
+            <img src="img/restart-button-blue.png" alt="blue restart button" id="restartButtonBlue" class="hidden">
+        </div>
+
+        <div class="settingsButton" id="activeSettingsButton">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+
+        <div class="settingsButton hidden" id="inactiveSettingsButton">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+    </div>
+
+    <footer>
+        <a href="https://www.flaticon.com/free-icons/loop" title="loop icons">Loop icons created by Freepik - Flaticon</a><br>
+        <a href="https://www.flaticon.com/free-icons/play" title="play icons">Play icons created by Freepik - Flaticon</a><br>
+        <a href="https://www.flaticon.com/free-icons/gear" title="gear icons">Gear icons created by Freepik - Flaticon</a>
+    </footer>
+
+    <!--JavaScript-->
+    <script src="js/app.js"></script>
+</main>
+</body>
+</html>
