@@ -1,9 +1,10 @@
 // Timer refresh interval in milliseconds
 const REFRESH_INTERVAL = 10;
 
-const IDLE_STATE = 2
-const WORKING_STATE = 0;
-const BREAK_STATE = 1;
+const IDLE_STATE = 0;
+const WAITING_TIME = 1;
+const PICKUP_TIME = 2;
+const SANDWICH_TIME = 3;
 
 let settingsTabOpen = false;
 
@@ -14,7 +15,7 @@ let startingTime;
 
 let intervalID;
 
-let currentState = IDLE_STATE;
+let currentState = SANDWICH_TIME;
 
 // DOM elements
 
@@ -25,8 +26,7 @@ resetButton.classList.add("hidden");
 startButton.addEventListener("click", startTimersLoop);
 resetButton.addEventListener("click", resetTimer);
 
-const workingStatus = document.getElementById("workingStatus");
-const breakStatus = document.getElementById("breakStatus");
+const statusBar = document.getElementById("statusBar");
 
 const playButtonBlack = document.getElementById("playButtonBlack");
 const playButtonBlue = document.getElementById("playButtonBlue");
@@ -67,7 +67,8 @@ resetButton.addEventListener("mouseleave", () =>{
     restartButtonBlue.classList.toggle("hidden");
 })
 
-updateTimerDisplay();
+//updateTimerDisplay();
+updateStatusDisplay();
 
 function updateTimerDisplay(){
     const timerElement = document.getElementById("timer");
@@ -98,36 +99,19 @@ function updateTimerDisplay(){
 }
 
 function updateStatusDisplay(){
-    let workingActive;
-    let breakActive;
-    switch(currentState){
-        case WORKING_STATE:
-            workingActive = true;
-            breakActive = false;
+    switch(currentState) {
+        case IDLE_STATE:
+            statusBar.textContent = "Idle";
             break;
-        case BREAK_STATE:
-            workingActive = false;
-            breakActive = true;
+        case WAITING_TIME:
+            statusBar.textContent = "Wait for eggs";
             break;
-        default:
-            workingActive = false;
-            breakActive = false;
-    }
-
-    makeStatusElementActive(workingStatus, workingActive);
-    makeStatusElementActive(breakStatus, breakActive);
-
-    console.log(workingStatus);
-    console.log(breakStatus);
-}
-
-function makeStatusElementActive(element, active){
-    if(active && ! element.classList.contains(active)){
-        element.classList.add("active");
-    }
-
-    else if(! active && element.classList.remove("active")){
-        element.classList.remove("active");
+        case PICKUP_TIME:
+            statusBar.textContent = "Check the egg baskets";
+            break;
+        case SANDWICH_TIME:
+            statusBar.textContent = "Make a sandwich";
+            break;
     }
 }
 
