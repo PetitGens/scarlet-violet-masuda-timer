@@ -15,8 +15,9 @@ h1{
 #statusBar{
     margin-left: auto;
     margin-right: auto;
-    
-    width: fit-content;
+
+    width: 25%;
+    min-width: fit-content;
     border: solid;
     
     padding: 1vh;
