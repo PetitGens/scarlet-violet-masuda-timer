@@ -8,14 +8,14 @@ const SANDWICH_TIME = 3;
 
 let settingsTabOpen = false;
 
-let workingTime = 25;
-let breakTime = 5;
+// The interval between every basket check for eggs
+let eggWaitingTime = 5;
 
 let startingTime;
 
 let intervalID;
 
-let currentState = SANDWICH_TIME;
+let currentState = IDLE_STATE;
 
 // DOM elements
 
@@ -23,7 +23,15 @@ const startButton = document.getElementById("startButton");
 const resetButton = document.getElementById("resetButton");
 resetButton.classList.add("hidden");
 
-startButton.addEventListener("click", startTimersLoop);
+// Execute this when clicking the "start" button
+startButton.addEventListener("click", () => {
+    currentState = WAITING_TIME;
+    updateStatusDisplay();
+    updateStartResetButtons();
+    setSettingsButtonActivity(false);
+    startTimer();
+});
+
 resetButton.addEventListener("click", resetTimer);
 
 const statusBar = document.getElementById("statusBar");
@@ -67,21 +75,26 @@ resetButton.addEventListener("mouseleave", () =>{
     restartButtonBlue.classList.toggle("hidden");
 })
 
-//updateTimerDisplay();
+updateTimerDisplay();
 updateStatusDisplay();
 
 function updateTimerDisplay(){
     const timerElement = document.getElementById("timer");
     
+    if(currentState === SANDWICH_TIME || currentState === PICKUP_TIME){
+        timerElement.textContent = `00:00`;
+        return;
+    }
+
     if(currentState === IDLE_STATE){
-        timerElement.textContent = `${workingTime.toString().padStart(2, '0')}:00`;
+        timerElement.textContent = `${eggWaitingTime.toString().padStart(2, '0')}:00`;
         return;
     }
  
     // Elased time in milliseconds
     const elapsed = new Date() - startingTime;
 
-    const currentTimerTime = currentState === WORKING_STATE ? workingTime : breakTime;
+    const currentTimerTime = eggWaitingTime;
 
     // Remaining time in milliseconds
     const remaining = currentTimerTime * 60000 - elapsed;
@@ -101,7 +114,7 @@ function updateTimerDisplay(){
 function updateStatusDisplay(){
     switch(currentState) {
         case IDLE_STATE:
-            statusBar.textContent = "Idle";
+            statusBar.textContent = "Press \"start\" when you're ready and have your sandwich made";
             break;
         case WAITING_TIME:
             statusBar.textContent = "Wait for eggs";
@@ -115,18 +128,29 @@ function updateStatusDisplay(){
     }
 }
 
+function updateStartResetButtons(){
+    const isResetButtonActive = currentState === WAITING_TIME;
+
+    if(isResetButtonActive){
+        startButton.classList.add("hidden");
+        resetButton.classList.remove("hidden");
+    } else {
+        startButton.classList.remove("hidden");
+        resetButton.classList.add("hidden");
+    }
+}
+
 function onTimeOut(){
     clearInterval(intervalID); // Stops the countdown
 
-    currentState = (currentState + 1) % 2; // Toggle the current state
+    currentState = PICKUP_TIME;
     updateStatusDisplay();
-
-    startTimer();
+    updateStartResetButtons();
 }
 
 function resetTimer(){
     // Enable settings button
-    toggleSettingsButtonActivity();
+    setSettingsButtonActivity(true);
 
     clearInterval(intervalID);
 
@@ -135,16 +159,6 @@ function resetTimer(){
     updateStatusDisplay();
 
     toggleStartResetButtons();
-}
-
-function startTimersLoop(){
-    // Disable settings button
-    toggleSettingsButtonActivity();
-
-    currentState = WORKING_STATE;
-    updateStatusDisplay();
-    toggleStartResetButtons();
-    startTimer();
 }
 
 function startTimer(){
@@ -162,9 +176,14 @@ function toggleStartResetButtons(){
     resetButton.classList.toggle("hidden");
 }
 
-function toggleSettingsButtonActivity(){
-    activeSettingsButton.classList.toggle("hidden");
-    inactiveSettingsButton.classList.toggle("hidden");
+function setSettingsButtonActivity(value){
+    if(value) {
+        activeSettingsButton.classList.remove("hidden");
+        inactiveSettingsButton.classList.add("hidden");
+    } else {
+        activeSettingsButton.classList.add("hidden");
+        inactiveSettingsButton.classList.remove("hidden");
+    }
 }
 
 function onGearClicked(){
@@ -188,10 +207,10 @@ function onGearClicked(){
             return;
         }
 
-        workingTime = workDurationValue;
+        eggWaitingTime = workDurationValue;
         breakTime = breakDurationValue;
 
-        minutes = workingTime;
+        minutes = eggWaitingTime;
         updateTimerDisplay();
         settingsTabOpen = false;
     }
