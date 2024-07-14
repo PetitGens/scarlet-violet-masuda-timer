@@ -9,7 +9,8 @@ const SANDWICH_TIME = 3;
 let settingsTabOpen = false;
 
 // The time every sandwich lasts in Pokémon SV
-const sandwichTime = 30;
+// (It can be modified by the user if the sandwich has been made previously)
+let sandwichTime = 30;
 
 // The interval between every basket check for eggs
 let eggWaitingTime = 5;
@@ -57,7 +58,7 @@ const timerContainer = document.getElementById("timerContainer");
 
 const durationInputArea = document.getElementById("durationInput");
 const workDurationField = document.getElementById("workDuration");
-const breakDurationField = document.getElementById("breakDuration");
+const sandwichDurationField = document.getElementById("sandwichDuration");
 
 // Switches between timer and duration input when the gear icon is clicked
 activeSettingsButton.addEventListener("click", onGearClicked);
@@ -114,8 +115,8 @@ function updateTimerDisplay(){
         return;
     }
 
-    minutes = Math.floor(remaining / 60000).toString().padStart(2, '0');
-    seconds = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
+    const minutes = Math.floor(remaining / 60000).toString().padStart(2, '0');
+    const seconds = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
 
     timerElement.textContent = `${minutes}:${seconds}`;
 }
@@ -203,8 +204,9 @@ function setSettingsButtonActivity(value){
 function onGearClicked(){
     if(settingsTabOpen){
         const workDurationValue = Number.parseInt(workDurationField.value);
+        const sandwichDurationValue = Number.parseInt(sandwichDurationField.value);
 
-        if(workDurationValue < 0 || workDurationValue > 99){
+        if(workDurationValue < 1 || workDurationValue > 99){
             workDurationField.classList.add("invalid");
             setTimeout(()=>{
                 workDurationField.classList.remove("invalid");
@@ -212,9 +214,17 @@ function onGearClicked(){
             return;
         }
 
-        eggWaitingTime = workDurationValue;
+        if(sandwichDurationValue < 1 || sandwichDurationValue > 99){
+            sandwichDurationField.classList.add("invalid");
+            setTimeout(()=>{
+                sandwichDurationField.classList.remove("invalid");
+            }, 500)
+            return;
+        }
 
-        minutes = eggWaitingTime;
+        eggWaitingTime = workDurationValue;
+        sandwichTime = sandwichDurationValue;
+        
         updateTimerDisplay();
         settingsTabOpen = false;
     }
